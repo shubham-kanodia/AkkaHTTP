@@ -8,7 +8,7 @@ object Models {
 
   case class Greet(name: String, message: String) extends Response
 
-  object ServiceJsonProtocol extends DefaultJsonProtocol {
+  trait ServiceJsonProtocol extends DefaultJsonProtocol {
     implicit val personProtocol = jsonFormat2(Greet.apply)
   }
 
