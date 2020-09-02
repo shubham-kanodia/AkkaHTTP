@@ -17,6 +17,6 @@ object GreetingServer extends App {
   implicit val materializer = ActorMaterializer()
 
   val server = new GreetingServer()
-  server.startServer("localhost", 8080)
+  server.startServer("0.0.0.0", 8080)
 
 }
