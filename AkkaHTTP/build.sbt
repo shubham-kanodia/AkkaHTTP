@@ -1,3 +1,7 @@
+enablePlugins(JavaAppPackaging)
+
+packageName in Docker := "greetingapi"
+
 resolvers ++= Seq(
   "Sonatype Release" at "https://oss.sonatype.org/content/repositories/releases"
 )
