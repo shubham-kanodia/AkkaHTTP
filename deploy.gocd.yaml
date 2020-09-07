@@ -1,0 +1,19 @@
+format_version: 9
+pipelines:
+  build-and-deploy:
+    materials:
+      git_repo:
+        git: https://github.com/shubham-kanodia/AkkaHTTP.git
+        branch: master
+    stages:
+      - build:
+          jobs:
+            build-and-test:
+              tasks:
+                - build-test:
+                  - exec:
+                    command: sbt
+                    arguments:
+                      - "clean"
+                      - "compile"
+                      - "build"
