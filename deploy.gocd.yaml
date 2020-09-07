@@ -1,4 +1,7 @@
-format_version: 9
+environments:
+  deployment:
+    pipelines:
+      - build-and-deploy
 pipelines:
   build-and-deploy:
     materials:
