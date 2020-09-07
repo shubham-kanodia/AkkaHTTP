@@ -1,22 +1,34 @@
-environments:
-  deployment:
-    pipelines:
-      - build-and-deploy
 pipelines:
   build-and-deploy:
+    group: simple
     materials:
-      git_repo:
+      mygit:
         git: https://github.com/shubham-kanodia/AkkaHTTP.git
-        branch: master
     stages:
       - build:
           jobs:
-            build-and-test:
+            build:
               tasks:
-                - build-test:
-                  - exec:
+               - exec:
+                   command: sbt
+                   arguments:
+                      - clean
+                      - compile
+                      - test
+      - deploy:
+          jobs:
+            deploy:
+              environment_variables:
+                DOCKERHUB_USERNAME: shubhamkanodia
+              secure_variables:
+                DOCKERHUB_PASSWORD: "AES:HJWSOnCVGxHyLGC2DM1DjA==:W2PcdMdE6aBwCDKcNnamrFHLP+UHCC9ZdMDxabngPhY="
+              tasks:
+                - exec:
+                    command: sh
+                    arguments:
+                      - "-c"
+                      - "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
+                - exec:
                     command: sbt
                     arguments:
-                      - "clean"
-                      - "compile"
-                      - "build"
+                      - "docker:publish"
