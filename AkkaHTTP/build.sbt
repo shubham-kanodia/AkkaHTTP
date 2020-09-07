@@ -1,8 +1,10 @@
 enablePlugins(JavaAppPackaging)
 
-packageName in Docker := "shubhamkanodia/greetingapi"
+val dockerUserName = sys.env.getOrElse("DOCKERHUB_USERNAME", "falseUserName")
+val dockerPassword = sys.env.getOrElse("DOCKERHUB_PASSWORD", "****")
+val pipelineLabel = sys.env.getOrElse("GO_PIPELINE_LABEL", "0.0")
 
-dockerUpdateLatest in Docker := true
+packageName in Docker := s"$dockerUserName/greetingapi:$pipelineLabel"
 
 resolvers ++= Seq(
   "Sonatype Release" at "https://oss.sonatype.org/content/repositories/releases"
