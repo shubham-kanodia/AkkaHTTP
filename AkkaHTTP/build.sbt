@@ -1,10 +1,12 @@
 enablePlugins(JavaAppPackaging)
 
-val dockerUserName = sys.env.getOrElse("DOCKERHUB_USERNAME", "falseUserName")
-val dockerPassword = sys.env.getOrElse("DOCKERHUB_PASSWORD", "****")
-val pipelineLabel = sys.env.getOrElse("GO_PIPELINE_LABEL", "0.0")
+val dockerUserName = sys.env.getOrElse("DOCKERHUB_USERNAME", "USER_NAME")
+val dockerPassword = sys.env.getOrElse("DOCKERHUB_PASSWORD", "*****")
+val pipelineLabel = sys.env.getOrElse("GO_PIPELINE_LABEL", "0-0")
 
-packageName in Docker := s"$dockerUserName/greetingapi:$pipelineLabel"
+packageName in Docker := "greetingapi"
+dockerRepository in ThisBuild := Some("docker.io")
+dockerAlias := DockerAlias(None, Some(dockerUserName), (packageName in Docker).value, Some(pipelineLabel))
 
 resolvers ++= Seq(
   "Sonatype Release" at "https://oss.sonatype.org/content/repositories/releases"
