@@ -1,11 +1,15 @@
 pipelines:
   build-and-deploy:
-    group: simple
+    group: defaultGroup
+    label_template: ${COUNT}
     materials:
       mygit:
         git: https://github.com/shubham-kanodia/AkkaHTTP.git
+        branch: master
     stages:
       - build:
+          fetch_materials: true
+          clean_workspace: false
           jobs:
             build:
               tasks:
@@ -16,6 +20,8 @@ pipelines:
                       - compile
                       - test
       - deploy:
+          fetch_materials: true
+          clean_workspace: false
           jobs:
             deploy:
               environment_variables:
@@ -26,9 +32,10 @@ pipelines:
                 - exec:
                     command: sh
                     arguments:
-                      - "-c"
-                      - "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
+                      - -c
+                      - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
                 - exec:
                     command: sbt
                     arguments:
-                      - "docker:publish"
+                      - docker:publish
+                    working_directory: AkkaHTTP
