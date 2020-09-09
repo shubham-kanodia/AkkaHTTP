@@ -48,6 +48,12 @@ pipelines:
                     command: sh
                     arguments:
                       - -c
+                      - j2 deployment-conf.j2 > deployment.yaml
+                    working_directory: K8
+                - exec:
+                    command: sh
+                    arguments:
+                      - -c
                       - kubectl apply -f deployment.yaml
                     working_directory: K8
                 - exec:

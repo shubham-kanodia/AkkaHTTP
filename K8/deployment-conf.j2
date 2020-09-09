@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: greeting-container
-        image: shubhamkanodia/greetingapi:9
+        image: shubhamkanodia/greetingapi:{{ env("GO_PIPELINE_LABEL") }}
         ports:
         - containerPort: 8080
         livenessProbe:
