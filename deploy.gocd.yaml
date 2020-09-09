@@ -45,14 +45,14 @@ pipelines:
             deploy:
               tasks:
                 - exec:
-                  command: sh
-                  arguments:
-                    - -c
-                    - kubectl apply -f deployment.yaml
-                  working_directory: AkkaHTTP/K8
+                    command: sh
+                    arguments:
+                      - -c
+                      - kubectl apply -f deployment.yaml
+                    working_directory: AkkaHTTP/K8
                 - exec:
-                  command: sh
-                  arguments:
-                    - -c
-                    - kubectl apply -f nodeport-service.yaml 
-                  working_directory: AkkaHTTP/K8
+                    command: sh
+                    arguments:
+                      - -c
+                      - kubectl apply -f nodeport-service.yaml 
+                    working_directory: AkkaHTTP/K8
