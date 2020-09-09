@@ -19,11 +19,11 @@ pipelines:
                       - clean
                       - compile
                       - test
-      - deploy:
+      - publish:
           fetch_materials: true
           clean_workspace: false
           jobs:
-            deploy:
+            publish:
               environment_variables:
                 DOCKERHUB_USERNAME: shubhamkanodia
               secure_variables:
@@ -39,3 +39,20 @@ pipelines:
                     arguments:
                       - docker:publish
                     working_directory: AkkaHTTP
+      - deploy:
+          clean_workspace: false
+          jobs:
+            deploy:
+              tasks:
+                - exec:
+                  command: sh
+                  arguments:
+                    - -c
+                    - kubectl apply -f deployment.yaml
+                  working_directory: AkkaHTTP/K8
+                - exec:
+                  command: sh
+                  arguments:
+                    - -c
+                    - kubectl apply -f nodeport-service.yaml 
+                  working_directory: AkkaHTTP/K8

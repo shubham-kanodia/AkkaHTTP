@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: greeting-service
+spec:
+  type: NodePort
+  selector:
+    app: greeting
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greeting
+  template:
+    metadata:
+      name: greeting-api
+      labels:
+        app: greeting
+    spec:
+      containers:
+      - name: greeting-container
+        image: shubhamkanodia/greetingapi:7
+        ports:
+        - containerPort: 8080
