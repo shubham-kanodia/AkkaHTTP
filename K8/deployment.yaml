@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: greeting-container
-        image: shubhamkanodia/greetingapi:7
+        image: shubhamkanodia/greetingapi:9
         ports:
         - containerPort: 8080
