@@ -24,6 +24,10 @@ pipelines:
           clean_workspace: false
           jobs:
             publish:
+              artifacts:
+                - build:
+                    source: K8/
+                    destination: deployment-confs/
               environment_variables:
                 DOCKERHUB_USERNAME: shubhamkanodia
               secure_variables:
@@ -43,9 +47,6 @@ pipelines:
     group: defaultGroup
     label_template: ${upstream}
     materials:
-      git-repo:
-          git: https://github.com/shubham-kanodia/AkkaHTTP.git
-          branch: master
       upstream:
         type: dependency
         pipeline: build-and-publish
@@ -55,11 +56,13 @@ pipelines:
           clean_workspace: false
           jobs:
             deploy:
-              artifacts:
-                - build:
-                    source: K8/deployment.yaml
-                    destination: deployment-yamls
               tasks:
+                - fetch:
+                    pipeline: build-and-publish
+                    stage: publish
+                    job: publish
+                    source: deployment-confs/K8
+                    destination: /
                 - exec:
                     command: sh
                     arguments:
