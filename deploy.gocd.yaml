@@ -1,5 +1,5 @@
 pipelines:
-  build-and-deploy:
+  build-and-publish:
     group: defaultGroup
     label_template: ${COUNT}
     materials:
@@ -13,9 +13,9 @@ pipelines:
           jobs:
             build:
               tasks:
-               - exec:
-                   command: sbt
-                   arguments:
+                - exec:
+                    command: sbt
+                    arguments:
                       - clean
                       - compile
                       - test
@@ -39,10 +39,23 @@ pipelines:
                     arguments:
                       - docker:publish
                     working_directory: AkkaHTTP
+  deploy:
+    group: defaultGroup
+    label_template: "${upstream}"
+    materials:
+      upstream:
+        type: dependency
+        pipeline: build-and-publish
+        stage: publish
+    stages:
       - deploy:
           clean_workspace: false
           jobs:
             deploy:
+              artifacts:
+                - build:
+                    source: K8/deployment.yaml
+                    destination: deployment-yamls
               tasks:
                 - exec:
                     command: sh
@@ -60,5 +73,5 @@ pipelines:
                     command: sh
                     arguments:
                       - -c
-                      - kubectl apply -f nodeport-service.yaml 
+                      - kubectl apply -f nodeport-service.yaml
                     working_directory: K8
