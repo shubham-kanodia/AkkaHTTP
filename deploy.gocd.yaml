@@ -62,7 +62,6 @@ pipelines:
                     stage: publish
                     job: publish
                     source: deployment-confs/K8
-                    destination: /
                 - exec:
                     command: sh
                     arguments:
